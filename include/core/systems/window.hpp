@@ -1,17 +1,16 @@
 #pragma once
 
-#include <stdexcept>
+#include <SDL3/SDL.h>
 
 #include "core/system.hpp"
 
 namespace core::systems
 {
-    class Window : public System
+    class Window : System<Window>
     {
-        public:
-        Window()
-        {
-            throw std::runtime_error("Couldn't make a Window");
-        }
+    public:
+        Window();
+    private:
+        SDL_Window* window;
     };
 }

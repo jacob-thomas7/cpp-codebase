@@ -1,28 +1,22 @@
 #pragma once
 
-#include <functional>
-#include <string>
-#include <unordered_map>
-
-#include "core/event.hpp"
+#include "core/polymorphic/polyid.hpp"
+#include <type_traits>
 
 namespace core
 {
-    enum class SystemStatus
+    //! \brief The basic unit of functionality
+    //! \details A core::Application manages classes
+    //! derived from System. A System may depend
+    //! on other Systems, allowing separation of
+    //! concerns as well as a form of "interproccess
+    //! communication." Uses the curiously recurring
+    //! template pattern.
+    template<typename Derived>
+    class System : public polymorphic::PolyID
     {
-        active,
-        suspended
-    };
-
-    class System
-    {
-        std::unordered_map<std::string_view, std::function<void(System*, Event&)>> event_listeners;
-
-        public:
-        System() {}
-        void add_event_listener(std::string_view event_name, std::function<void(System*, Event&)> callback);
-        void on_event(core::Event& event);
-
-        void start(core::Event& event);
+    protected:
+        //! \brief Initializes a polymorphic ID on the class
+        System() : PolyID::PolyID(*static_cast<Derived*>(this)) {}
     };
 }

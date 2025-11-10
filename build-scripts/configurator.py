@@ -1,11 +1,11 @@
 from pathlib import Path
 import subprocess
 
-def build(cmake_vars: dict):
+def configure_cmake(cmake_vars: dict, build: bool = False):
     source_dir = Path(__file__).parents[1]
     build_dir = source_dir / "build"
 
-    # Setup
+    # Configure
     command = ["cmake"]
     command.append("-S" + str(source_dir.absolute()))
     command.append("-B" + str(build_dir.absolute()))
@@ -21,4 +21,5 @@ def build(cmake_vars: dict):
     subprocess.run(command)
 
     # Build
-    subprocess.run(['cmake', '--build', build_dir])
+    if build:
+        subprocess.run(['cmake', '--build', build_dir])

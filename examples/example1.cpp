@@ -1,37 +1,36 @@
 #include <iostream>
-#include <stdexcept>
 
 #include "core/application.hpp"
+
 #include "core/systems/metadata.hpp"
-#include "core/systems/window.hpp"
+#include "core/polymorphic/polymanager.hpp"
 
-#include "core/event.hpp"
-
-int run_application();
+using namespace core;
 
 int main()
 {
-    try {
-        run_application();
-    } catch (std::runtime_error error) {
-        std::cerr << "Unable to begin application: " << error.what() << std::endl;
-        return 1;
+    Application app;
+
+    app.register_system<systems::Metadata>("C++ Codebase Example 1");
+
+    // if (auto option = app.get_system<systems::Metadata>(); option.has_value()) {
+    //     auto metadata = option.value().get();
+    //     std::cout << metadata.name << ", " << metadata.version << ", " << metadata.license << std::endl;
+    // }
+
+    // std::cout << opt.has_value();
+    // if (opt.has_value()) {
+    //     //std::cout << std::endl << opt.value().get().a;
+    //     //opt.value().get().a = 6;
+    // }
+
+    // auto m = app.systems.begin();
+    // std::cout << m->first << ", " << static_cast<Metadata*>((app.systems.begin()->second.get()))->a;
+    
+    /*
+    app.dipatch_event<Start>(1, 4){
+        for event_handler
+            if 
     }
-    
-}
-
-int run_application()
-{
-    core::Application app;
-    core::systems::Metadata metadata("Test");
-    //core::systems::Window window;
-    
-    core::Test test_evt;
-    core::Event& e = test_evt;
-    auto thing = *static_cast<core::Test*>(&e);
-    std::cout << thing.e;
-
-    app.register_system(metadata);
-    app.on_event(test_evt);
-    return 0;
+    */
 }
