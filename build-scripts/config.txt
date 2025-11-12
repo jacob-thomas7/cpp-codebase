@@ -1,0 +1,4 @@
+CORE_STATIC : Build the core library as a static library : switch : ON
+CORE_SHARED : Build the core library as a shared library : switch : OFF
+
+CORE_BUILD_EXAMPLES : Build the examples directory : switch : OFF

@@ -20,6 +20,6 @@ namespace core::polymorphic
         //! \brief Constructor that uses the polymorphic ID as assigned
         //! by the core::polymorphic::PolyManager
         template <typename T>
-        PolyID(T assignee) : id(PolyManager::id<T>()) {}
+        PolyID(T* assignee) : id(PolyManager::id<T>()) {}
     };
 }

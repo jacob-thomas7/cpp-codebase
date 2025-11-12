@@ -16,14 +16,10 @@ namespace core::systems
     };
 
     //! \brief Output stream formatter for core::systems::Version
-    std::ostream& operator<<(std::ostream& os, const systems::Version& version)
-    {
-        os << (int) version.version_major << '.' << (int) version.version_minor << '.' << (int) version.version_patch;
-        return os;
-    }
+    std::ostream& operator<<(std::ostream& os, const Version& version);
 
     //! \brief A core::System which contains metadata about the application
-    class Metadata : public System<Metadata>
+    class Metadata : public System
     {
     public:
         //! \brief The name of the application
@@ -41,6 +37,6 @@ namespace core::systems
             std::string_view name = "Application",
             Version version = { 1, 0, 0 },
             std::string_view license = "All Rights Reserved"
-        ) : name(name), version(version), license(license) {}
+        ) : System(this), name(name), version(version), license(license) {}
     };
 }
