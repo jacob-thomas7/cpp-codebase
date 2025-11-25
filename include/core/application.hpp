@@ -9,6 +9,8 @@
 #include "core/system.hpp"
 #include "core/event.hpp"
 
+#include <iostream>
+
 namespace core
 {
     //! \brief Container and state manager for an application
@@ -37,39 +39,39 @@ namespace core
             return std::make_optional<std::reference_wrapper<T>>(*static_cast<T*>(search->second.get()));
         }
 
+        //! \brief Registers a event handler
+        //! \details Registers a function on an object of type SystemT which will be called
+        //! when an event of EventT is dispatched.
         template<typename SystemT, typename EventT> requires(std::is_base_of_v<System, SystemT>, std::is_base_of_v<Event, EventT>)
-        void add_event_listener(SystemT* instance, std::function<void(SystemT*, EventT& event)> handler) {
+        void add_event_handler(SystemT* instance, std::function<void(SystemT*, EventT& event)> handler) {
             auto func = [instance, handler](Event& event) {
                 handler(instance, *static_cast<EventT*>(&event));
             };
             
             event_handlers.emplace(polymorphic::PolyManager::id<EventT>(), func);
-            //std::function<void(Event&)> handler = std::bind(func, instance, std::placeholders::_1);
         }
 
+        //! \brief Dispatches a core::Event to event handlers
+        //! \details Passes a core::Event of type EventT to each registered event handler
+        //! that handles EventT.
         template <typename EventT, typename... Args> requires(std::is_base_of_v<Event, EventT>)
         void dispatch_event(Args&&... args)
         {
-            auto search = event_handlers.find(polymorphic::PolyManager::id<EventT>());
-            if (search != event_handlers.end()){
-                EventT event(std::forward<Args>(args)...);
-                search->second(event);
+            auto search = event_handlers.equal_range(polymorphic::PolyManager::id<EventT>());
+            EventT event(std::forward<Args>(args)...);
+            int count = 0;
+            for (auto iter = search.first; iter != search.second; iter++) {
+                std::cout << count++ << ", " << iter->first << "return 1?";
+                //iter->second(event);
+                std::cout <<"Return 2?" << std::endl;
             }
+            std::cout << count << "hello?\n" << std::endl;
         }
 
-
-        // void add_event_listener(systems::Window* instance, std::function<void(systems::Window*, events::Start&)> handler)
-        // {
-        //     auto func = [instance, handler](Event& event) {
-        //         handler(instance, *static_cast<events::Start*>(&event));
-        //     };
-
-        //     event_handlers.emplace(polymorphic::PolyManager::id<events::Start>(), func);
-        // }
     private:
-        //! \brief Contains the polymorphic IDs of owned Systems
+        //! \brief Maps polymorphic IDs to owned Systems
         std::unordered_multimap<polymorphic::polymorphic_id_t, std::unique_ptr<System>> systems;
-        public:
+        //! \brief Maps polymorhpic IDs to event handlers of that type
         std::unordered_multimap<polymorphic::polymorphic_id_t, std::function<void(Event&)>> event_handlers;
     };
 }

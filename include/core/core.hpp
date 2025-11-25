@@ -15,3 +15,9 @@
 //! \file system.cpp
 //! \brief Definition for core::System
 #include "core/system.hpp"
+
+//! \file event.hpp
+//! \brief Declaration for core::Event
+//! \file event.cpp
+//! \file Definition for core::Event
+#include "core/event.hpp"
