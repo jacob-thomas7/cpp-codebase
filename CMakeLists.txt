@@ -9,38 +9,40 @@ project(cpp-codebase
 )
 
 # Options
-#include("cmake/options.cmake")
-
-# Dependencies
-# set(SDL_STATIC ON)
-# set(SDL_SHARED OFF)
-# include(FetchContent)
-# FetchContent_Declare(
-#     sdl3
-#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL.git"
-#     GIT_TAG        "release-3.2.24"
-#     FIND_PACKAGE_ARGS NAMES SDL3
-# )
-# FetchContent_MakeAvailable(sdl3)
+include("cmake/options.cmake")
+include("cmake/dependencies.cmake")
 
 # Core Library
-# add_library(core
+set(LIB_TYPE STATIC)
+if(CORE_SHARED AND CORE_STATIC)
+    message(FATAL_ERROR "Cannot use both a static and a shared library")
+endif()
+if((NOT CORE_SHARED) AND (NOT CORE_STATIC))
+    message(FATAL_ERROR "Must build as either CORE_SHARED or CORE_STATIC")
+endif()
+if(CORE_SHARED)
+    set(LIB_TYPE SHARED)
+else()
+    set(LIB_TYPE STATIC)
+endif()
+
+
+add_library(core ${LIB_TYPE}
     # src/application.cpp
-    # #src/system.cpp
+    #src/system.cpp
 
     # src/systems/metadata.cpp
     # src/systems/window.cpp
+    
+    src/polymorphic/polymanager.cpp
+)
 
-    # src/polymorphic/polymanager.cpp
-# )
-# target_link_libraries(core SDL3::SDL3)
-# target_include_directories(core PUBLIC
-#     ${PROJECT_SOURCE_DIR}/include
-#     ${SDL3_SOURCE_DIR}/include
-# )
+target_include_directories(core PUBLIC
+    ${PROJECT_SOURCE_DIR}/include
+)
 
 # Examples
-# if(CODEBASE_BUILD_EXAMPLES)
+if(CORE_BUILD_EXAMPLES)
     add_executable(cpp-codebase-example1
         examples/example1.cpp
     )
@@ -49,5 +51,5 @@ project(cpp-codebase
         include
     )
 
-    # target_link_libraries(cpp-codebase-example1 PUBLIC core)
-# endif()
+    target_link_libraries(cpp-codebase-example1 PUBLIC core)
+endif()

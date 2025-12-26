@@ -1,8 +1,11 @@
 from pathlib import Path
 
+SWITCH = { "ON", "OFF" }
+
 BUILD_VARS = {
-    "CODEBASE_BUILD_EXAMPLES" : { "True", "False" },
-    "CODEBASE_BUILD_TESTS" : {"True", "False"}
+    "CORE_STATIC" : SWITCH,
+    "CORE_SHARED" : SWITCH,
+    "CORE_BUILD_EXAMPLES" : SWITCH
 }
 
 output_name = input("Name of the build script (omit extension): ") + ".py"
@@ -32,9 +35,9 @@ vars += "}"
 
 file = open(Path(__file__).parent / output_name, "w")
 file.write(f"""
-import builder
+import configurator
 
-builder.build({vars})
+configurator.configure_cmake({vars})
 """)
 file.close()
 

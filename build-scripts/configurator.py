@@ -1,12 +1,14 @@
 from pathlib import Path
 import subprocess
+import platform
 
 def configure_cmake(cmake_vars: dict, build: bool = False):
     source_dir = Path(__file__).parents[1]
-    build_dir = source_dir / "build"
+    build_dir = source_dir / "build" / platform.system().lower()
 
     # Configure
     command = ["cmake"]
+    command.append("--fresh")
     command.append("-S" + str(source_dir.absolute()))
     command.append("-B" + str(build_dir.absolute()))
 

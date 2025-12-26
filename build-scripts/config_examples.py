@@ -1,5 +1,8 @@
+
 import configurator
 
 configurator.configure_cmake({
-    "CODEBASE_BUILD_EXAMPLES" : True
+	"CORE_STATIC" : "ON",
+	"CORE_SHARED" : "OFF",
+	"CORE_BUILD_EXAMPLES" : "ON",
 })
