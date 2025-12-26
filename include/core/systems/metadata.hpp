@@ -1,10 +1,13 @@
 #pragma once
 
-#include <ostream>
+#include <iostream>
 #include <string>
 #include <stdint.h>
 
 #include "core/system.hpp"
+#include "core/events/runtime.hpp"
+
+#include <functional>
 
 namespace core::systems
 {

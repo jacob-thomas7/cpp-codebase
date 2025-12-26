@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/application.hpp"
 #include "core/system.hpp"
+#include "core/application.hpp"
 #include "core/systems/metadata.hpp"
 
 #include <iostream>
