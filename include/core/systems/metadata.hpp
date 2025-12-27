@@ -42,6 +42,6 @@ namespace core::systems
             std::string_view name = "Application",
             Version version = { 1, 0, 0 },
             std::string_view license = "All Rights Reserved"
-        ) : System(application), name(name), version(version), license(license) {}
+        ) : System(this, application), name(name), version(version), license(license) {}
     };
 }

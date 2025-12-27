@@ -28,18 +28,19 @@ endif()
 
 
 add_library(core ${LIB_TYPE}
-    # src/application.cpp
-    #src/system.cpp
+    src/application.cpp
+    src/system.cpp
 
-    # src/systems/metadata.cpp
-    # src/systems/window.cpp
+    src/systems/window.cpp
     
     src/polymorphic/polymanager.cpp
 )
 
 target_include_directories(core PUBLIC
     ${PROJECT_SOURCE_DIR}/include
+    ${SDL_SOURCE_DIR}/include
 )
+target_link_libraries(core PUBLIC SDL3::SDL3)
 
 # Examples
 if(CORE_BUILD_EXAMPLES)
