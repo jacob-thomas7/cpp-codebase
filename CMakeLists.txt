@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 project(core
     VERSION 0.0.4
     LANGUAGES CXX
-    HOMEPAGE_URL https://github.com/jacob-thomas7/cpp-codebase
+    HOMEPAGE_URL https://github.com/jacob-thomas7/cpp-codebase-core
 )
 
 # Options
@@ -13,16 +13,18 @@ set(CORE_STATIC ON CACHE BOOL "Build the core library as a static library")
 set(CORE_SHARED OFF CACHE BOOL "Build the core library as a shared library")
 
 function(create_target lib_type)
-    string(TOLOWER "core-${lib_type}" TARGET_NAME)
+    string(TOLOWER "${PROJECT_NAME}-${lib_type}" TARGET_NAME)
+
+    set(SRC "${core_SOURCE_DIR}/src/${PROJECT_NAME}")
 
     add_library(${TARGET_NAME} ${lib_type}
-        ${CORE_SOURCE_DIR}/src/core/application.cpp
-        ${CORE_SOURCE_DIR}/src/core/polymorphic.cpp
-        ${CORE_SOURCE_DIR}/src/core/system.cpp
+        ${SRC}/application.cpp
+        ${SRC}/polymorphic.cpp
+        ${SRC}/system.cpp
     )
 
     target_include_directories(${TARGET_NAME} PUBLIC
-        ${CORE_SOURCE_DIR}/include
+        ${core_SOURCE_DIR}/include
     )
 
     add_library(codebase::${TARGET_NAME} ALIAS ${TARGET_NAME})
@@ -38,10 +40,10 @@ if(CORE_STATIC)
 endif()
 
 # Make sure codebase::core exists, default to static if both were created
-if(TARGET core-static)
-    add_library(codebase::core ALIAS core-static)
+if(TARGET ${PROJECT_NAME}-static)
+    add_library(codebase::${PROJECT_NAME} ALIAS ${PROJECT_NAME}-static)
 elseif(TARGET core-shared)
-    add_library(codebase::core ALIAS core-shared)
+    add_library(codebase::${PROJECT_NAME} ALIAS ${PROJECT_NAME}-shared)
 else()
-    message(WARNING "codebase::core was not created because neither CORE_SHARED nor CORE_STATIC were set")
+    message(WARNING "codebase::${PROJECT_NAME} was not created because neither CORE_SHARED nor CORE_STATIC were set")
 endif()
