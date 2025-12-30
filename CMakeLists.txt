@@ -8,7 +8,7 @@ project(cpp-codebase
     HOMEPAGE_URL https://github.com/jacob-thomas7/cpp-codebase
 )
 
-set(CORE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(CORE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR} PARENT_SCOPE)
 
 # Options
 include("cmake/options.cmake")
