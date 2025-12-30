@@ -21,6 +21,6 @@ namespace core {
         auto callback = [handler_func](System* system, Event& event) {
             return handler_func(static_cast<SystemT*>(system), *static_cast<EventT*>(&event));
         };
-        event_handlers.emplace(polymorphic::PolyManager::id<EventT>(), callback);
+        event_handlers.emplace(PolyManager::id<EventT>(), callback);
     }
 }

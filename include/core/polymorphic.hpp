@@ -2,10 +2,10 @@
 
 #include <cstdint>
 #include <string>
-#include <typeinfo>
 #include <unordered_map>
+#include <typeinfo>
 
-namespace core::polymorphic
+namespace core
 {
     typedef uint64_t polymorphic_id_t;
 
@@ -35,5 +35,24 @@ namespace core::polymorphic
 
         //! \brief A map of type's raw names to their associated polymorphic ID
         std::unordered_map<std::string_view, polymorphic_id_t> ids = std::unordered_map<std::string_view, polymorphic_id_t>();
+    };
+
+    class PolyID
+    {
+    public:
+        //! \brief Stores the polymorphic ID of derived classes
+        //! \details Contains a core::polymorphic::polymorphic_id_t
+        //! assigned by the core::polymorphic::PolyManager to
+        //! classes which derive from it.
+        //! Useful when working with polymorphism in such a way
+        //! that it is difficult to get identity of a derived class
+        //! when working with references or pointers to the base class.
+        const polymorphic_id_t id;
+
+    protected:
+        //! \brief Constructor that uses the polymorphic ID as assigned
+        //! by the core::polymorphic::PolyManager
+        template <typename T>
+        PolyID(T* assignee) : id(PolyManager::id<T>()) {}
     };
 }

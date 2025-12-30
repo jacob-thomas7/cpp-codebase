@@ -1,6 +1,6 @@
-#include "core/polymorphic/polymanager.hpp"
+#include "core/polymorphic.hpp"
 
-namespace core::polymorphic
+namespace core
 {
     PolyManager& PolyManager::get_instance()
     {
