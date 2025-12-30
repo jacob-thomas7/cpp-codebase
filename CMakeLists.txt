@@ -3,54 +3,48 @@ cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 20)
 
 project(cpp-codebase
-    VERSION 0.0.2
+    VERSION 0.0.3
     LANGUAGES CXX
     HOMEPAGE_URL https://github.com/jacob-thomas7/cpp-codebase
 )
 
+set(CORE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+
 # Options
 include("cmake/options.cmake")
-include("cmake/dependencies.cmake")
+# include("cmake/dependencies.cmake")
 
-# Core Library
-set(LIB_TYPE STATIC)
-if(CORE_SHARED AND CORE_STATIC)
-    message(FATAL_ERROR "Cannot use both a static and a shared library")
-endif()
-if((NOT CORE_SHARED) AND (NOT CORE_STATIC))
-    message(FATAL_ERROR "Must build as either CORE_SHARED or CORE_STATIC")
-endif()
+function(create_target lib_type)
+    string(TOLOWER "core-${lib_type}" TARGET_NAME)
+
+    add_library(${TARGET_NAME} ${lib_type}
+        src/application.cpp
+        src/system.cpp
+        
+        src/polymorphic/polymanager.cpp
+    )
+
+    target_include_directories(${TARGET_NAME} PUBLIC
+        ${CORE_SOURCE_DIR}/include
+    )
+
+    add_library(codebase::${TARGET_NAME} ALIAS ${TARGET_NAME})
+endfunction()
+
+# Create library
 if(CORE_SHARED)
-    set(LIB_TYPE SHARED)
-else()
-    set(LIB_TYPE STATIC)
+    create_target(SHARED)
 endif()
 
+if(CORE_STATIC)
+    create_target(STATIC)
+endif()
 
-add_library(core ${LIB_TYPE}
-    src/application.cpp
-    src/system.cpp
-
-    src/systems/window.cpp
-    
-    src/polymorphic/polymanager.cpp
-)
-
-target_include_directories(core PUBLIC
-    ${PROJECT_SOURCE_DIR}/include
-    ${SDL_SOURCE_DIR}/include
-)
-target_link_libraries(core PUBLIC SDL3::SDL3)
-
-# Examples
-if(CORE_BUILD_EXAMPLES)
-    add_executable(cpp-codebase-example1
-        examples/example1.cpp
-    )
-    
-    target_include_directories(cpp-codebase-example1 PUBLIC
-        include
-    )
-
-    target_link_libraries(cpp-codebase-example1 PUBLIC core)
+# Make sure codebase::core exists, default to static if both were created
+if(TARGET core-static)
+    add_library(codebase::core ALIAS core-static)
+elseif(TARGET core-shared)
+    add_library(codebase::core ALIAS core-shared)
+else()
+    message(WARNING "codebase::core was not created because neither CORE_SHARED nor CORE_STATIC were set")
 endif()

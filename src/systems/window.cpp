@@ -39,7 +39,7 @@ namespace core::systems
             throw std::runtime_error(SDL_GetError());
         }
 
-        application.queue_event_ms<events::Update>(0ms);
+        application.queue_event<events::Update>();
         return false;
     }
 

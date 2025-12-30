@@ -1,0 +1,14 @@
+Core library
+	Just Application, System, and Event, polymorphism
+Packages
+	Utils
+		Metadata
+		Resource manager
+	Console App
+		Coloring
+	SDL Game Engine
+		Windowing
+
+Each package can be a separate repo
+
+	

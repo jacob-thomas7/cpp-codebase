@@ -60,6 +60,12 @@ namespace core
             queue_event<std::chrono::milliseconds, EventT>(delay, std::forward<Args>(args)...);
         }
 
+        template<typename EventT, typename... Args> requires(std::is_base_of_v<Event, EventT>)
+        void queue_event(Args&&... args)
+        {
+            queue_event<std::chrono::milliseconds, EventT>(0, std::forward<Args>(args)...);
+        }
+
         template<typename T> requires(std::is_base_of_v<Event, T>)
         void dispatch_event(T& event)
         {
