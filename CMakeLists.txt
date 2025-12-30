@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 20)
 
-project(cpp-codebase
+project(core
     VERSION 0.0.4
     LANGUAGES CXX
     HOMEPAGE_URL https://github.com/jacob-thomas7/cpp-codebase
@@ -16,7 +16,9 @@ function(create_target lib_type)
     string(TOLOWER "core-${lib_type}" TARGET_NAME)
 
     add_library(${TARGET_NAME} ${lib_type}
-        ${CORE_SOURCE_DIR}/src/core/*.cpp
+        ${CORE_SOURCE_DIR}/src/core/application.cpp
+        ${CORE_SOURCE_DIR}/src/core/polymorphic.cpp
+        ${CORE_SOURCE_DIR}/src/core/system.cpp
     )
 
     target_include_directories(${TARGET_NAME} PUBLIC
