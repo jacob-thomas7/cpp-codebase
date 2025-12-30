@@ -20,7 +20,7 @@ function(create_target lib_type)
     )
 
     target_include_directories(${TARGET_NAME} PUBLIC
-        include
+        ${CORE_SOURCE_DIR}/include
     )
 
     add_library(codebase::${TARGET_NAME} ALIAS ${TARGET_NAME})
