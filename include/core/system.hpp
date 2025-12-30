@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "core/event.hpp"
-#include "core/polymorphic/polymorphic.hpp"
+#include "core/polymorphic.hpp"
 
 namespace core
 {
@@ -29,7 +29,7 @@ namespace core
             std::runtime_error(std::string("\"") + current + "\" is missing dependency \"" + missing + "\"") {}
     };
 
-    class System : public polymorphic::PolyID
+    class System : public PolyID
     {
     public:
         //! \brief Attempts to handle an event.
@@ -68,7 +68,7 @@ namespace core
         //! \brief Contains the event handlers.
         //! \details Assigned to by add_event_handler.
         std::unordered_multimap<
-            polymorphic::polymorphic_id_t,
+            polymorphic_id_t,
             std::function<bool(System*, Event&)>
         > event_handlers;
     };

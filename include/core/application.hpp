@@ -8,7 +8,7 @@
 #include <chrono>
 
 #include "core/event.hpp"
-#include "core/polymorphic/polymanager.hpp"
+#include "core/polymorphic.hpp"
 #include "core/system.hpp"
 
 namespace core
@@ -25,7 +25,7 @@ namespace core
         template<typename T> requires(std::is_base_of_v<System, T>)
         std::optional<std::reference_wrapper<T>> get_system()
         {
-            auto search_id = polymorphic::PolyManager::id<T>();
+            auto search_id = PolyManager::id<T>();
             for (auto& system : systems) {
                 if (system->id == search_id) {
                     return std::make_optional<std::reference_wrapper<T>>(*static_cast<T*>(system.get()));

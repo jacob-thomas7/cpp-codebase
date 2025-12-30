@@ -1,10 +1,10 @@
 #pragma once
 
-#include "core/polymorphic/polymorphic.hpp"
+#include "core/polymorphic.hpp"
 
 namespace core
 {
-    class Event : public polymorphic::PolyID
+    class Event : public PolyID
     {
     protected:
         template <typename T> requires(std::is_base_of_v<Event, T>)
