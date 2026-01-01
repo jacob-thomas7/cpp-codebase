@@ -18,8 +18,7 @@ function(create_target lib_type)
     string(TOLOWER "${PROJECT_NAME_LOWER}-${lib_type}" TARGET_NAME)
 
     set(SRC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME_LOWER}")
-    set(INC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME_LOWER}")
-
+    
     add_library(${TARGET_NAME} ${lib_type}
         "${SRC}/application.cpp"
         "${SRC}/polymorphic.cpp"
@@ -27,7 +26,7 @@ function(create_target lib_type)
     )
 
     target_include_directories(${TARGET_NAME} PUBLIC
-        "${INC}/include/"
+        "${${PROJECT_NAME}_SOURCE_DIR}/include/"
     )
 
     add_library(codebase::${TARGET_NAME} ALIAS ${TARGET_NAME})
