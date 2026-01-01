@@ -17,8 +17,8 @@ set(${PROJECT_NAME}_SHARED OFF CACHE BOOL "Build the core library as a shared li
 function(create_target lib_type)
     string(TOLOWER "${PROJECT_NAME_LOWER}-${lib_type}" TARGET_NAME)
 
-    set(SRC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME}")
-    set(INC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME}")
+    set(SRC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME_LOWER}")
+    set(INC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME_LOWER}")
 
     add_library(${TARGET_NAME} ${lib_type}
         "${SRC}/application.cpp"
