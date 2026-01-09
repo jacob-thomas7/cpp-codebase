@@ -8,7 +8,7 @@
 #include "core/event.hpp"
 #include "core/polymorphic.hpp"
 
-namespace core
+namespace crotale::core
 {
     // Forward declaration to resolve circular dependency.
     // For this same reason, the implementation of System was moved into system.tpp
@@ -38,12 +38,12 @@ namespace core
         //! \param event The event to handle.
         //! \tparam T The type of the event to handle.
         //! \returns true if the event was handled.
-        bool handle_event(Event& event);
+        void handle_event(Event& event);
         
     protected:
         //! \brief Constructs a System with a reference to its owning Application.
         template <typename T> requires(std::is_base_of_v<System, T>)
-        System(T* derived_this, Application& application) : application(application), PolyID(derived_this) {}
+        System(T* derived_this);
         
         //! \brief Ensures that the owning Application has a specific System.
         //! \throws a MissingDependencyException if the application does not have a System of the specified type.
@@ -59,7 +59,7 @@ namespace core
         //! \param handler The method to use as the handler.
         template <typename SystemT, typename EventT>
         requires(std::is_base_of_v<SystemT, System>, std::is_base_of_v<Event, EventT>)
-        void add_event_handler(bool(SystemT::* handler)(EventT&));
+        void add_event_handler(void(SystemT::* handler)(EventT&));
 
         //! \brief The owning application.
         Application& application;
@@ -69,7 +69,11 @@ namespace core
         //! \details Assigned to by add_event_handler.
         std::unordered_multimap<
             polymorphic_id_t,
-            std::function<bool(System*, Event&)>
+            std::function<void(System*, Event&)>
         > event_handlers;
     };
 }
+
+#ifndef CROTALE_CORE_APPLICATION_H_
+    #include "core/application.hpp"
+#endif

@@ -1,23 +1,23 @@
 # Project Info
 cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(CORE
-    VERSION 0.0.5
+project(
+    CROTALE_CORE
+    VERSION 0.0.6
     LANGUAGES CXX
-    HOMEPAGE_URL https://github.com/jacob-thomas7/cpp-codebase-core
 )
 
-string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
-
 # Options
-set(${PROJECT_NAME}_STATIC ON CACHE BOOL "Build the core library as a static library")
-set(${PROJECT_NAME}_SHARED OFF CACHE BOOL "Build the core library as a shared library")
+set(CROTALE_CORE_STATIC ON CACHE BOOL "Build the core library as a static library")
+set(CROTALE_CORE_SHARED OFF CACHE BOOL "Build the core library as a shared library")
 
 function(create_target lib_type)
-    string(TOLOWER "${PROJECT_NAME_LOWER}-${lib_type}" TARGET_NAME)
+    string(TOLOWER "crotale_core-${lib_type}" TARGET_NAME)
+    string(TOLOWER "core-${lib_type}" TARGET_NAME_SHORT)
 
-    set(SRC "${${PROJECT_NAME}_SOURCE_DIR}/src/${PROJECT_NAME_LOWER}")
+    set(SRC "${CROTALE_CORE_SOURCE_DIR}/src/core")
     
     add_library(${TARGET_NAME} ${lib_type}
         "${SRC}/application.cpp"
@@ -26,26 +26,26 @@ function(create_target lib_type)
     )
 
     target_include_directories(${TARGET_NAME} PUBLIC
-        "${${PROJECT_NAME}_SOURCE_DIR}/include/"
+        "${CROTALE_CORE_SOURCE_DIR}/include/"
     )
 
-    add_library(codebase::${TARGET_NAME} ALIAS ${TARGET_NAME})
+    add_library(crotale::${TARGET_NAME_SHORT} ALIAS ${TARGET_NAME})
 endfunction()
 
 # Create library
-if(${PROJECT_NAME}_SHARED)
+if(CROTALE_CORE_SHARED)
     create_target(SHARED)
 endif()
 
-if(${PROJECT_NAME}_STATIC)
+if(CROTALE_CORE_STATIC)
     create_target(STATIC)
 endif()
 
 # Make sure the default target exists, default to static if both were created
-if(TARGET ${PROJECT_NAME_LOWER}-static)
-    add_library(codebase::${PROJECT_NAME_LOWER} ALIAS ${PROJECT_NAME_LOWER}-static)
-elseif(TARGET ${PROJECT_NAME_UPPER}-shared)
-    add_library(codebase::${PROJECT_NAME_LOWER} ALIAS ${PROJECT_NAME_LOWER}-shared)
+if(TARGET crotale_core-static)
+    add_library(crotale::core ALIAS crotale_core-static)
+elseif(TARGET crotale_core-shared)
+    add_library(crotale::core ALIAS crotale_core-shared)
 else()
-    message(WARNING "codebase::${PROJECT_NAME_LOWER} was not created because neither ${PROJECT_NAME}_STATIC nor ${PROJECT_NAME}_SHARED were set")
+    message(WARNING "crotale::core was not created because neither CROTALE_CORE_STATIC nor CROTALE_CORE_SHARED were set")
 endif()

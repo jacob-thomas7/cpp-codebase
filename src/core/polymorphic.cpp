@@ -1,12 +1,10 @@
 #include "core/polymorphic.hpp"
 
-namespace core
+namespace crotale::core
 {
     PolyManager& PolyManager::get_instance()
     {
-        if (instance == NULL) {
-            instance = new PolyManager;
-        }
-        return *instance;
+        static PolyManager instance;
+        return instance;
     }
 }

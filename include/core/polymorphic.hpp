@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <typeinfo>
 
-namespace core
+namespace crotale::core
 {
     typedef uint64_t polymorphic_id_t;
 
@@ -27,9 +27,6 @@ namespace core
         }
 
     private:
-        //! \brief Maintains a singleton instance
-        static inline PolyManager* instance = NULL;
-        
         //! \brief Returns or creates the singleton instance
         static PolyManager& get_instance();
 
